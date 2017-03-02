@@ -1,5 +1,6 @@
 # Virtual Reality Renderer for MATLAB :fire:
 BIOEN 3301 Computational Methods Project
+
 Patrick Pearson, Julie Tang, Zach Zundel
 
 ## Abstract
