@@ -22,7 +22,8 @@ the results.
    2. Record the distance between the viewing frame and the point of collision
    between the ray and the object, or record no collision if the ray travels a
    distance beyond which there are no objects
-   3. 
+   3. If the ray collides with an object, extend another ray towards the light 
+   source to detect if there are any occluding objects and to calculate shading
 5. Display the resulting composite image
 6. Repeat with the next image from a webcam
 
