@@ -1,6 +1,8 @@
-# Virtual Reality Renderer for MATLAB :fire:
+# Virtual Reality Renderer for MATLAB
 **BIOEN 3301 Computational Methods Project**  
 *Patrick Pearson, Julie Tang, and Zach Zundel*
+
+**Sponsoring faculty:** [Sarang Joshi](https://www.bioen.utah.edu/directory/profile.php?userID=252)
 
 ## Abstract
 Long confined the to the realm of science fiction, virtual reality has 
@@ -11,25 +13,22 @@ appears that the image is integrated with the rest of the stream. Our
 project will render objects in a video stream from a webcam and display 
 the results.
 
-Our MATLAB program will connect to a webcam and fetch images one at a time.
-There will be a checkerboard image in each frame of the video feed. The 
-image will go through several filters to find the location of the corners 
-of the checkerboard squares. First, the boundaries of the squares will be 
-isolated using edge detection. Next, the equations of the lines that 
-represent the boundaries will be calculated. Finally, the intersections of 
-these lines will be used to calculate the locations of the corners. These 
-locations will be compared to the known size and shape of the checkerboard 
-image, and this will be used to determine the distance and orienation of 
-the actual checkerboard in space relative to the camer. This will be used 
-to calculate the position and orientation of the camera. This will inform 
-the program how to render a three-dimensional object over the image.
+## Basic Approach
+1. Connect to a webcam and fetch an image
+2. Locate the checkerboard pattern and its corners within the image 
+3. Calculate position and orientation of the camera relative to the checkerboard
+4. Render a 3D object using ray-tracing within the image
+   1. Extend a ray from the camera frame towards the object
+   2. Record the distance between the viewing frame and the point of collision
+   between the ray and the object, or record no collision if the ray travels a
+   distance beyond which there are no objects
+   3. 
+5. Display the resulting composite image
+6. Repeat with the next image from a webcam
 
-The image will be rendered using ray-tracing. Rays will be extended out from 
-the camera until they come into contact with a surface to display or they 
-have traveled some distance without contacting any surface. If a ray 
-contacts a surface, the distance will then be calculated between that point 
-on the surface and the light source to determine the illumination of the 
-surface. If the ray between the surface and the light source crosses any 
-other surfaces in its path, the direct illumination will be zero and the 
-illumination of that pixel will be determined by the ambient illumination 
-of the scene. 
+## Level of Difficulty: *High*
+The functions for image recognition are already present in MATLAB's Computer Vision
+toolbox, but no functions exist for raytracing. These functions must be written and
+optimised. Furthermore, the project could be made more difficult by rewriting the 
+general-case checkerboard recognition functions within MATLAB for our specific use 
+case and comparing the efficiency of the result against MATLAB's functions.
