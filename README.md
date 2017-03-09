@@ -11,7 +11,9 @@ operations. One of the core tasks associated with virtual reality is
 rendering a computer-generated image over a video stream such that it 
 appears that the image is integrated with the rest of the stream. Our 
 project will render objects in a video stream from a webcam and display 
-the results.
+the results. In order to not make this project completely impossible, 
+our results will be rendered and displayed on a checkers board. Ultimately 
+this will use a combination of 3D rendering techinques and camera calibration. 
 
 ## Basic Approach
 1. Connect to a webcam and fetch an image
