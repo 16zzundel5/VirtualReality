@@ -5,7 +5,7 @@
 **Sponsoring faculty:** [Sarang Joshi](https://www.bioen.utah.edu/directory/profile.php?userID=252)
 
 ### Overview of Project
- This project does t address a specific problem in healthcare but can address a multitude of problems. One problem it can
+ This project does not address a specific problem in healthcare but can address a multitude of problems. One problem it can
  address is it can help surgeon in while preforming  surgery by rendering a real time image of a tumor or body part. This is
  important because any little detail that helps surgeons maximize their probability of success will save lives. 
  Another potential problem this technology could be applied to is help motivate people to exersize. Appling the augmented 
