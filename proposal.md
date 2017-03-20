@@ -23,3 +23,4 @@
 
 ### Outcome of Project
  - What will be the "deliverable" to the sponsor (i.e., plots, statistics, data, values, images, understanding, etc.)?
+ The deliverable product will be a GUI application which streams images from a webcam and renders a three-dimensional object within the stream.
