@@ -42,11 +42,14 @@ The ray-tracing functions will occupy between 300 and 400 lines of code. Corner 
 
 ### Potential Difficulties
 #### What are some potential difficulties that may arise as you pursue the project?
-One large difficulty will be working with images where the calibration features are not completely detected, or not detected at all. 
-Another is the high computational cost of both image processing and ray-tracing.
+One large difficulty will be working with images where the calibration features are not completely detected, or not detected at all. Another is the high computational cost of both image processing and ray-tracing.
+
+An entirely-different type of problem is that of illumination of the rendered object. If too many or too few light sources are used in calculating illumination, then the object will look too unnatural.
 
 #### How might you overcome these?
 If no calibration features are detected, the program could interpolate the current position and orientation of the camera from previous values. This could be implemented by default, instead of as an error handling method, which would speed up the processing time for images and address the second problem. Finally, if the camera is not moving very quickly or at all, the raytraced image would not change and rendering could occur much faster as it would simply by superimposing the previously-rendered object over a new image.
+
+The correct number of light sources and the ambient light levels in the room can be estimated by observing the illumination of the calibration pattern. Trial and error will have to be used to map measured illumination to number, position, and intensity of virtual light sources illumination the rendered object.
 
 ### Outcome of Project
 #### What will be the "deliverable" to the sponsor (i.e., plots, statistics, data, values, images, understanding, etc.)?
