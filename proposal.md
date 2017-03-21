@@ -7,8 +7,8 @@
 ### Overview of Project
 #### What real-world bioengineering problem does this project address?
 This project does not address a specific problem in healthcare but the general approach can address a multitude of problems. 
-One example is rendering a real time support images over a video feed for a laproscopic surgery machine. 
-This is important because any little detail or piece of information that helps surgeons maximize their probability of success will save lives. Another potential problem this technology could be applied to is help motivate people to exercise. Applying augmented reality technology to games allows games to be more immersive, which makes them more attractive to users. The effectiveness of this approach was demonstrated with the mobile gaming app *Pokemon Go* which increased the average user's step count by nearly 1000 steps per day (doi:10.1136/bmj.i6270). 
+One example is rendering a real time support images over a video feed for a laparoscopic surgery machine. 
+This is important because any little detail or piece of information that helps surgeons maximize their probability of success will save lives. Another potential problem this technology could be applied to is help motivate people to exercise. Applying augmented reality technology to games allows games to be more immersive, which makes them more attractive to users. The effectiveness of this approach was demonstrated with the mobile gaming app *Pokémon Go* which increased the average user's step count by nearly 1000 steps per day (doi:10.1136/bmj.i6270). 
 While these applications are out of the scope of this project due to their complexity, the conceptual fundamentals of rendering a digital object within a video feed remain the same. 
 
 #### Is the level of difficulty appropriate for a term project?
