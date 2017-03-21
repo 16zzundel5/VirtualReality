@@ -38,7 +38,7 @@ No plotting or printing will be done, but images will be displayed with the rend
 No data will be generated and saved to disk. There will be images generated but they will be simply displayed, not saved. 
 
 #### What is the estimated length of the program?
-The ray-tracing functions will occupy between 300 and 400 lines of code. Corner detection will take approximately 10 lines of code because of MATLAB's builtin functionality. Image display and image fetching will also occupy approximate 10 lines of code each. Finally, the initial GUI will occupy approximately 50 lines of code. Allowing for whitespace, commenting, and error handling, the whole project will likely occupy approximately 800 lines of code. 
+The ray-tracing functions will occupy between 100 and 200 lines of code. Corner detection will take approximately 30 lines of code because of MATLAB's builtin functionality. Image display and image fetching will also occupy approximate 30 lines of code each. Finally, the initial GUI will occupy approximately 100 lines of code. Allowing for whitespace, commenting, and error handling, the whole project will likely occupy approximately 600 lines of code. 
 
 ### Potential Difficulties
 #### What are some potential difficulties that may arise as you pursue the project?
