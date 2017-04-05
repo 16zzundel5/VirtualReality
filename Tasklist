@@ -1,7 +1,0 @@
-# Zach
- - Find viewport location from camera location
- - Trace objects from viewport
- - Detect ray endings
- - Trace light rays from object
- - Write ambient light equations
- - Superimpose rendered image on frame
