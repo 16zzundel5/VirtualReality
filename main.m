@@ -14,9 +14,12 @@ clear('cam');
 %% Main VR loop
 
 % First write 30 frames of video with no checkerboard detection
-% for k = 1:30
-%   writeVideo(writer, snapshot(cam)) 
-% end
+
+ for k = 1:30
+   writeVideo(writer, snapshot(cam)) 
+ end
+
+
 % Now do checkerboard for 30 frames
 
 %for k = 1:120
@@ -24,13 +27,19 @@ clear('cam');
     img = imread('test.jpeg');
          
     % Get calibration data
-    [imagePoints, boardSize] = detectCheckerboardPoints(img);
+
+     [imagePoints, boardSize] = detectCheckerboardPoints(img);
+     
+     hold on;
+     if ~isempty(imagePoints)
+         imagePoints(:,3) = 10;
+         img = insertShape(img, 'FilledCircle', imagePoints, 'Color', 'green', 'Opacity', 0.7);
+     end
     
-    hold on;
-    if ~isempty(imagePoints)
-        imagePoints(:,3) = 10;
-        img = insertShape(img, 'FilledCircle', imagePoints, 'Color', 'green', 'Opacity', 0.7);
-    end
+    imshow(img)
+    
+     writeVideo(writer, img);
+
     
    imshow(img)
 %end
