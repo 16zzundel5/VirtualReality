@@ -2,69 +2,29 @@
 %  BIOEN 3301 Final Project
 %  Patrick Pearson, Julie Tang, and Zach Zundel
 
-%%
-clear('cam');
+img = imread('test.jpg');
 
-%% Set up webcam
-%cam = webcam;
+[imagePoints, boardSize] = detectCheckerboardPoints(img);
 
-%% Set up video writer
-%writer = VideoWriter('checkerboard.avi', 'MPEG-4');
+pixels_per_inch = sqrt((imagePoints(1,1) - imagePoints(2,1))^2 ...
+                     + (imagePoints(1,2) - imagePoints(2,2))^2);
 
-%% Main VR loop
+a = [-3:3];
+worldPoints = [[a,a,a,a,a,a,a,a,a]',[-4:4,-4:4,-4:4,-4:4,-4:4,-4:4,-4:4]'];
 
-% First write 30 frames of video with no checkerboard detection
+[rotation, translation] = extrinsics(imagePoints, worldPoints, cameraParams);
 
- for k = 1:30
-   writeVideo(writer, snapshot(cam)) 
- end
+L = 5;
 
+[X Y Z] = sphere(L);
 
-% Now do checkerboard for 30 frames
+x = reshape(X, 1, (L + 1) * (L + 1));
+y = reshape(Y, 1, (L + 1) * (L + 1));
+z = reshape(Z, 1, (L + 1) * (L + 1));
 
-%for k = 1:120
-    % Retrieve image
-    img = imread('test.jpeg');
-         
-    % Get calibration data
+sphere_coords = [x' y' z'];
 
-     [imagePoints, boardSize] = detectCheckerboardPoints(img);
-     
-     hold on;
-     if ~isempty(imagePoints)
-         imagePoints(:,3) = 10;
-         img = insertShape(img, 'FilledCircle', imagePoints, 'Color', 'green', 'Opacity', 0.7);
-     end
-    
-    imshow(img)
-    
-     writeVideo(writer, img);
+spherePoints = [worldToImage(cameraParams, rotation, translation, sphere_coords) 30*ones((L + 1) * (L + 1),1)];
+img = insertShape(img, 'FilledCircle', spherePoints, 'Color', 'red');
 
-    
-   imshow(img)
-%end
-a=[-3:3]
-Worldpts=[[a,a,a,a,a,a,a,a,a]',[-4:4,-4:4,-4:4,-4:4,-4:4,-4:4,-4:4]']
-
-[rotation,translation]=extrinsics(imagePoints(:, 1:2), Worldpts, cameraParams);  
-
-ax = imshow(
-
-[X Y Z] = sphere;
-surface = surf(X, Y, Z);
-axes = surface.Parent;
-axes.CameraPosition = translation;
-axes.CameraUpVector = 
-
-%     writeVideo(writer, img); 
-    % Render sphere
-    % Display render image
-
-% average frame rate is 8 frames per second
-% 1
-
-%close(writer);
-
-%%
-
-
+image(img)
