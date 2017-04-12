@@ -15,29 +15,29 @@ worldPoints = [[a,a,a,a,a,a,a,a,a]',[-4:4,-4:4,-4:4,-4:4,-4:4,-4:4,-4:4]'];
 
 [rotation, translation] = extrinsics(imagePoints, worldPoints, cameraParams);
 
+sphere_center = worldToImage(cameraParams, rotation, translation, [0 0 0]);
+[X Y Z] = sphere(L);
 
-    sphere_center = worldToImage(cameraParams, rotation, translation, [0 0 0]);
-    [X Y Z] = sphere(L);
-    
-    x = reshape(X, 1, (L + 1) * (L + 1));
-    y = reshape(Y, 1, (L + 1) * (L + 1));
-    z = reshape(Z, 1, (L + 1) * (L + 1));
+x = reshape(X, 1, (L + 1) * (L + 1));
+y = reshape(Y, 1, (L + 1) * (L + 1));
+z = reshape(Z, 1, (L + 1) * (L + 1));
 
-    sphere_coords = bsxfun(@plus, rotation^-1 * [x; y; z], translation');
-    
-    X = reshape(sphere_coords(1, :), L + 1, L + 1);
-    Y = reshape(sphere_coords(2, :), L + 1, L + 1);
-    Z = reshape(sphere_coords(3, :), L + 1, L + 1);  
-   
-    X = X * pixels_per_inch + sphere_center(1);
-    Y = Y * pixels_per_inch + sphere_center(2);
-    %Z = (Z + 2) * pixels_per_inch;
-   
-    figure
-    ax = gca;
-    
-    imagesc(img, 'Parent', ax);
-    hold on
-    surf(X, Y , Z, 'Parent', ax);
+translation = translation * pixelsPerInch;
+sphere_coords = bsxfun(@plus, rotation^-1 * [x; y; z], translation');
+
+X = reshape(sphere_coords(1, :), L + 1, L + 1);
+Y = reshape(sphere_coords(2, :), L + 1, L + 1);
+Z = reshape(sphere_coords(3, :), L + 1, L + 1);  
+
+X = X * pixels_per_inch + sphere_center(1);
+Y = Y * pixels_per_inch + sphere_center(2);
+Z = (Z + 2) * pixels_per_inch;
+
+figure
+ax = gca;
+
+imagesc(img, 'Parent', ax);
+hold on
+surf(X, Y , Z, 'Parent', ax);
 
 end
