@@ -2,40 +2,35 @@
 %  BIOEN 3301 Final Project
 %  Patrick Pearson, Julie Tang, and Zach Zundel
 
-img = imread('test.jpg');
-gifOut = 'output.gif';
+clear('cam');
+cam = webcam;
 
-[imagePoints, boardSize] = detectCheckerboardPoints(img);
+frames = 0;
 
-pixels_per_inch = sqrt((imagePoints(1,1) - imagePoints(2,1))^2 ...
-                     + (imagePoints(1,2) - imagePoints(2,2))^2);
+while 1
+    img = snapshot(cam);
+    if mod(frames, 10) == 0
+        [imagePoints, boardSize] = detectCheckerboardPoints(img);
 
-a = [-3:3];
-worldPoints = [[a,a,a,a,a,a,a,a,a]',[-4:4,-4:4,-4:4,-4:4,-4:4,-4:4,-4:4]'];
+        pixels_per_inch = sqrt((imagePoints(1,1) - imagePoints(2,1))^2 ...
+                             + (imagePoints(1,2) - imagePoints(2,2))^2);
 
-[rotation, translation] = extrinsics(imagePoints, worldPoints, cameraParams);
+        [x, y] = meshgrid(-4:4, -3:3);
+        worldPoints = [x(:), y(:)];   
 
-L = 5;
-
-for L = 5:15
-    [X Y Z] = sphere(L);
-
-    x = reshape(X, 1, (L + 1) * (L + 1));
-    y = reshape(Y, 1, (L + 1) * (L + 1));
-    z = reshape(Z, 1, (L + 1) * (L + 1));
-
-    sphere_coords = [x' y' z'];
-
-    spherePoints = [worldToImage(cameraParams, rotation, translation, sphere_coords) 30*ones((L + 1) * (L + 1),1)];
-    img_L = insertShape(img, 'FilledCircle', spherePoints, 'Color', 'red');
-    
-    image(img_L)
-    
-    [imind, cm] = rgb2ind(img_L, 256);
-    
-    if L == 5
-        imwrite(imind, cm, gifOut, 'gif', 'LoopCount', Inf, 'DelayTime', 1);
-    else
-        imwrite(imind, cm, gifOut, 'gif', 'WriteMode', 'append', 'DelayTime', 1);
+        [rotation, translation] = extrinsics(imagePoints, worldPoints, cameraParams);
     end
+
+    [X Y Z] = sphere(10);
+
+    fvc = surf2patch(X * 2, Y * 2, Z * 2);
+
+    vertices = worldToImage(cameraParams, rotation, translation, fvc.vertices);
+
+    imagesc(img);
+    hold on
+    patch('Faces', fvc.faces, 'Vertices', vertices, 'FaceAlpha', 0, 'EdgeColor', 'green');
+    hold off
+
+    frames = frames + 1;
 end
