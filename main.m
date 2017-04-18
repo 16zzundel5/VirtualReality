@@ -2,40 +2,35 @@
 %  BIOEN 3301 Final Project
 %  Patrick Pearson, Julie Tang, and Zach Zundel
 
-img = imread('test.jpg');
+clear('cam');
+cam = webcam;
 
-[imagePoints, boardSize] = detectCheckerboardPoints(img);
+frames = 0;
 
-%%
-pixels_per_inch = sqrt((imagePoints(1,1) - imagePoints(2,1))^2 ...
-                     + (imagePoints(1,2) - imagePoints(2,2))^2);
+while 1
+    img = snapshot(cam);
+    if mod(frames, 10) == 0
+        [imagePoints, boardSize] = detectCheckerboardPoints(img);
 
-a = [-3:3];
-worldPoints = [[a,a,a,a,a,a,a,a,a]',[-4:4,-4:4,-4:4,-4:4,-4:4,-4:4,-4:4]'];
+        pixels_per_inch = sqrt((imagePoints(1,1) - imagePoints(2,1))^2 ...
+                             + (imagePoints(1,2) - imagePoints(2,2))^2);
 
-[rotation, translation] = extrinsics(imagePoints, worldPoints, cameraParams);
-[orientation, location] = extrinsicsToCameraPose(rotation, translation);
+        [x, y] = meshgrid(-4:4, -3:3);
+        worldPoints = [x(:), y(:)];   
 
-[azimuth, elevation, radius] = cart2sph(location(1), location(2), location(3));
-azimuth = azimuth * 180 / pi;
-elevation = elevation * 180 / pi;
+        [rotation, translation] = extrinsics(imagePoints, worldPoints, cameraParams);
+    end
 
-sphere_center = worldToImage(cameraParams, rotation, translation, [0 0 0]);
-[X Y Z] = sphere(20);
+    [X Y Z] = sphere(10);
 
-fvc = surf2patch(X, Y, Z, Z);
+    fvc = surf2patch(X * 2, Y * 2, Z * 2);
 
-vertices = worldToImage(cameraParams, rotation, translation, fvc.vertices);
+    vertices = worldToImage(cameraParams, rotation, translation, fvc.vertices);
 
-figure
-ax = gca;
- 
-imagesc(img, 'Parent', ax);
-hold on
+    imagesc(img);
+    hold on
+    patch('Faces', fvc.faces, 'Vertices', vertices, 'FaceAlpha', 0, 'EdgeColor', 'green');
+    hold off
 
-patch('Faces', fvc.faces, 'Vertices', vertices, 'EdgeColor', 'Red', 'FaceAlpha', 0.5, 'FaceColor', fvc.color);
-
-%rendered = surf(X, Y , Z, 'Parent', ax);
-
-%rotate(rendered, [0 0 1], azimuth)
-%rotate(rendered, [1 0 0], 90 - elevation)
+    frames = frames + 1;
+end
