@@ -2,11 +2,11 @@
 %  BIOEN 3301 Final Project
 %  Patrick Pearson, Julie Tang, and Zach Zundel
 
-for imgName = 1:1
-img = imread(['small calibration data/' num2str(imgName) '.jpg']);
+img = imread('test.jpg');
 
 [imagePoints, boardSize] = detectCheckerboardPoints(img);
 
+%%
 pixels_per_inch = sqrt((imagePoints(1,1) - imagePoints(2,1))^2 ...
                      + (imagePoints(1,2) - imagePoints(2,2))^2);
 
@@ -14,30 +14,28 @@ a = [-3:3];
 worldPoints = [[a,a,a,a,a,a,a,a,a]',[-4:4,-4:4,-4:4,-4:4,-4:4,-4:4,-4:4]'];
 
 [rotation, translation] = extrinsics(imagePoints, worldPoints, cameraParams);
+[orientation, location] = extrinsicsToCameraPose(rotation, translation);
+
+[azimuth, elevation, radius] = cart2sph(location(1), location(2), location(3));
+azimuth = azimuth * 180 / pi;
+elevation = elevation * 180 / pi;
 
 sphere_center = worldToImage(cameraParams, rotation, translation, [0 0 0]);
-[X Y Z] = sphere(L);
+[X Y Z] = sphere(20);
 
-x = reshape(X, 1, (L + 1) * (L + 1));
-y = reshape(Y, 1, (L + 1) * (L + 1));
-z = reshape(Z, 1, (L + 1) * (L + 1));
+fvc = surf2patch(X, Y, Z, Z);
 
-translation = translation * pixelsPerInch;
-sphere_coords = bsxfun(@plus, rotation^-1 * [x; y; z], translation');
-
-X = reshape(sphere_coords(1, :), L + 1, L + 1);
-Y = reshape(sphere_coords(2, :), L + 1, L + 1);
-Z = reshape(sphere_coords(3, :), L + 1, L + 1);  
-
-X = X * pixels_per_inch + sphere_center(1);
-Y = Y * pixels_per_inch + sphere_center(2);
-Z = (Z + 2) * pixels_per_inch;
+vertices = worldToImage(cameraParams, rotation, translation, fvc.vertices);
 
 figure
 ax = gca;
-
+ 
 imagesc(img, 'Parent', ax);
 hold on
-surf(X, Y , Z, 'Parent', ax);
 
-end
+patch('Faces', fvc.faces, 'Vertices', vertices, 'EdgeColor', 'Red', 'FaceAlpha', 0.5, 'FaceColor', fvc.color);
+
+%rendered = surf(X, Y , Z, 'Parent', ax);
+
+%rotate(rendered, [0 0 1], azimuth)
+%rotate(rendered, [1 0 0], 90 - elevation)
