@@ -9,7 +9,6 @@ frames = 0;
 
 samples = zeros(1, 3)
 
-
 while 1
     img = snapshot(cam);
     if mod(frames, 10) == 0
