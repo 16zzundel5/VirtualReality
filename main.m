@@ -1,42 +1,42 @@
 %% Virtual Reality Renderer for MATLAB
 %  BIOEN 3301 Final Project
 %  Patrick Pearson, Julie Tang, and Zach Zundel
-
+%% Initial setup of variables
 clear('cam');
 cam = webcam;
 
 frames = 0;
 
-samples = zeros(1, 3)
+samples = zeros(1, 3);
+interval = 10;
 
+%% Rendering and detection
 while 1
+    % Collect an image from the camera
     img = snapshot(cam);
-    if mod(frames, 10) == 0
+    
+    % If we're on an interval frame, we should re-detect the checkerboard
+    if mod(frames, interval) == 0
+        % Detect image points on the 
         [imagePoints, boardSize] = detectCheckerboardPoints(img);
         
-        pixels_per_inch = sqrt((imagePoints(1,1) - imagePoints(2,1))^2 ...
-                             + (imagePoints(1,2) - imagePoints(2,2))^2);
-
-        [x, y] = meshgrid(-4:4, -3:3);
+        [x, y] = meshgrid(-4:4, -2:3);
         worldPoints = [x(:), y(:)];   
-
-        [rotation, translation] = extrinsics(imagePoints, worldPoints, cameraParams);
-
-        sampleTimes = 10 * (0:(frames / 10));
-        samples(frames/10 + 1, :) = translation;
-    end
-    
-    if frames > 20
-        interpolatedPosition = interp1(sampleTimes, samples, frames, 'pchip', 'extrap');
-    else
-        interpolatedPosition = translation;
+        
+        if size(imagePoints) == size(worldPoints)
+            [rotation, translation] = extrinsics(imagePoints, worldPoints, cameraParams);
+            position = -rotation * translation';
+ 
+        else
+            frames = frames - 1;
+        end
     end
 
-    [X Y Z] = sphere(10);
+    [X, Y, Z] = sphere(4);
 
-    fvc = surf2patch(X * 2, Y * 2, Z * 2);
+    fvc = surf2patch(X, Y, Z - 1);
 
-    vertices = worldToImage(cameraParams, rotation, interpolatedPosition, fvc.vertices);
+    vertices = worldToImage(cameraParams, rotation, translation, fvc.vertices);
 
     imagesc(img);
     hold on
